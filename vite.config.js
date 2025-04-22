@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/react-tailwind-todo-list/"
+  baes: "/react-tailwind-todo-list/",
   plugins: [
     react(),
     tailwindcss(),
