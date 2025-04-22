@@ -3,6 +3,7 @@ import Button from "./components/Button";
 import Item from "./components/Item";
 import { ThemeContext } from "./components/context/ThemeContext";
 import Header from "./components/Header";
+import { icons } from "./components/data/data";
 
 
 
@@ -188,10 +189,13 @@ const App = () => {
 									className="border-[1px] border-rose-600 rounded-md outline-none h-9 cursor-pointer appearance-none bg-rose-400 px-2"
 									ref={newItemIconRef}
 								>
-									<option className="text-center" value="💪">💪</option>
-									<option className="text-center" value="💻">💻</option>
-									<option className="text-center" value="🛌">🛌</option>
-									<option className="text-center" value="📚">📚</option>
+									{
+										icons.map((icon) => {
+											return (
+												<option className="text-center" value={icon.label}>{icon.icon}</option>
+											)
+										})
+									}
 								</select>
 						</div>
 						<Button
