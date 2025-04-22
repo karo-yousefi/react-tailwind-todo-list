@@ -134,13 +134,13 @@ const App = () => {
 	return (
 		<ThemeContext.Provider value={theme}>
 			<div
-				className={`flex flex-col justify-start items-center h-screen transition-all ${theme === "dark" ? "bg-slate-900" : "bg-orange-50"}`}
+				className={`flex flex-col justify-start items-center min-lg:h-screen transition-all ${theme === "dark" ? "bg-slate-900" : "bg-orange-50"}`}
 				onClick={closeAddNewMenu}
 			>
 				<Header onSwtichThemeClick={handleSwitchTheme}/>
-				<div className="flex flex-row max-md:flex-col-reverse max-md:justify-start justify-center items-center w-full h-full">
-					<div className="h-full max-md:w-full w-[60%] flex justify-center items-start">
-						<div className={`min-h-[85%] grid grid-flow-col gap-3 mt-10 ${itemList.length > 12 ? "grid-cols-2 min-md:grid-rows-12 w-[90%] min-w-[500px] max-lg:flex max-lg:flex-col max-lg:justify-start max-lg:items-center max-md:min-w-[400px]" : "grid-cols-1 w-[50%] min-w-[450px] max-md:w-[70%] max-md:min-w-[380px]"}`}>
+				<div className="flex flex-row max-lg:flex-col-reverse max-lg:justify-end justify-center items-center w-full h-full">
+					<div className="h-full max-lg:w-full w-[60%] flex justify-center items-start">
+						<div className={`min-h-[85%] max-lg:h-full ${itemList.length > 12 ? "flex flex-col justify-start items-center gap-3 w-[80%] min-lg:grid min-lg:grid-cols-2 min-lg:grid-rows-12 min-lg:grid-flow-col" : "flex flex-col justify-start items-center gap-3 w-[70%] max-lg:min-w-[360px]"}`}>
 							{
 								itemList.map((item, index) => {
 									return (
@@ -158,7 +158,7 @@ const App = () => {
 							}
 						</div>
 					</div>
-					<div className="h-full w-[50%] flex flex-col justify-center items-center gap-3">
+					<div className="h-full max-lg:h-[30vh] w-[50%] flex flex-col justify-center items-center gap-3 shrink-0">
 						<Button
 							text="Add Task"
 							lightMode={isAddActive ? "bg-sky-500 hover:bg-sky-600" : "bg-gray-400 hover-bg-gray-400"}
