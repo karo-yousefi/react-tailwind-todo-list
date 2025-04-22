@@ -138,9 +138,9 @@ const App = () => {
 				onClick={closeAddNewMenu}
 			>
 				<Header onSwtichThemeClick={handleSwitchTheme}/>
-				<div className="flex justify-center items-center w-full h-full">
-					<div className="h-full w-[60%] flex justify-center items-start">
-						<div className={`min-h-[85%] grid  grid-flow-col ${itemList.length > 12 ? "grid-cols-2 w-[70%]" : "grid-cols-1 w-[40%]"} grid-rows-12  gap-3 mt-10`}>
+				<div className="flex flex-row max-md:flex-col-reverse max-md:justify-start justify-center items-center w-full h-full">
+					<div className="h-full max-md:w-full w-[60%] flex justify-center items-start">
+						<div className={`min-h-[85%] grid grid-flow-col gap-3 mt-10 ${itemList.length > 12 ? "grid-cols-2 min-md:grid-rows-12 w-[90%] min-w-[500px] max-lg:flex max-lg:flex-col max-lg:justify-start max-lg:items-center max-md:min-w-[400px]" : "grid-cols-1 w-[50%] min-w-[450px] max-md:w-[70%] max-md:min-w-[380px]"}`}>
 							{
 								itemList.map((item, index) => {
 									return (
@@ -208,22 +208,3 @@ const App = () => {
 }
 
 export default App
-
-
-
-// TO DO:
-
-// [done] - data in the header
-// [done] - save theme local storage
-// [done] - add new item (new window open) - time and date still need to be added
-// [done] - save items in the local storage 
-// [done] - hover to delete (new button)
-// [done] - click to done
-// [done] - close the add window
-// [done] - scroll for more items
-// one page per day (next page and prev page)
-// clear today list ?
-// [done] - clear all button (all the days)
-// [done] - new color for items based on the theme?
-// footer
-// refactor

@@ -21,8 +21,8 @@ const Header = ({ onSwtichThemeClick, }) => {
 	}, [])
 
 	return (
-		<div className="w-full h-[70px] shrink-0 flex justify-between items-center px-10">
-			<div className="flex justify-start items-center w-full h-full">
+		<div className="w-full h-[70px] shrink-0 flex justify-center items-center px-10">
+			<div className="flex justify-start items-center w-[50%] h-full">
 				<Button
 					text={theme === "dark" ? <FaSun /> : <FaMoon />}
 					lightMode="bg-rose-500 hover:bg-rose-600"
@@ -30,7 +30,7 @@ const Header = ({ onSwtichThemeClick, }) => {
 					onClick={onSwtichThemeClick}
 				/>
 			</div>
-			<div className="flex justify-end items-center w-full h-full gap-20">
+			<div className="flex justify-end items-center w-full h-full">
 				<p
 					className={`text-2xl font-mono select-none transition-all ${theme === "dark" ? "text-white" : "text-slate-800"}`}
 				>
