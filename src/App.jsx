@@ -134,7 +134,7 @@ const App = () => {
 	return (
 		<ThemeContext.Provider value={theme}>
 			<div
-				className={`flex flex-col justify-start items-center min-lg:h-screen transition-all ${theme === "dark" ? "bg-slate-900" : "bg-orange-50"}`}
+				className={`flex flex-col justify-start items-center h-full min-lg:h-screen transition-all ${theme === "dark" ? "bg-slate-900" : "bg-orange-50"}`}
 				onClick={closeAddNewMenu}
 			>
 				<Header onSwtichThemeClick={handleSwitchTheme}/>
