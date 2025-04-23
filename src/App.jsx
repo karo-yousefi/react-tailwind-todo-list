@@ -71,12 +71,14 @@ const App = () => {
 
 		setItemList(copyItemList);
 		saveInLocalStorage("itemList", copyItemList);
+		setNewItemInputRef("");
 		setNewItemIconRef(icons[0].icon); // Resetting the Icon selection to the first option after adding the new task (aka closing the menu)
 	};
 
 	const closeAddNewMenu = () => {
 		if (isAddMenuOpen) {
 			setIsAddMenuOpen(false);
+			setNewItemInputRef("");
 			setNewItemIconRef(icons[0].icon);  // Resetting the Icon selection to the first option after closing the add new menu
 		}
 	}
