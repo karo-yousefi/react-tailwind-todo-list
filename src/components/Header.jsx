@@ -4,7 +4,7 @@ import Button from "./Button";
 import { FaMoon, FaSun } from "react-icons/fa6";
 
 
-const Header = ({ onSwtichThemeClick, }) => {
+const Header = ({ onSwitchThemeClick, }) => {
 	const theme = useContext(ThemeContext);
 	const [time, setTime] = useState(null);
 
@@ -27,7 +27,7 @@ const Header = ({ onSwtichThemeClick, }) => {
 					text={theme === "dark" ? <FaSun /> : <FaMoon />}
 					lightMode="bg-rose-500 hover:bg-rose-600"
 					darkMode="bg-violet-500 hover:bg-violet-600"
-					onClick={onSwtichThemeClick}
+					onClick={onSwitchThemeClick}
 				/>
 			</div>
 			<div className="flex justify-end items-center w-full h-full">

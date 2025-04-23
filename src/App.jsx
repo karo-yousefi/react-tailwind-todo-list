@@ -1,30 +1,41 @@
 import { useState, useEffect, useRef } from "react";
+import { ThemeContext } from "./components/context/ThemeContext";
 import Button from "./components/Button";
 import Item from "./components/Item";
-import { ThemeContext } from "./components/context/ThemeContext";
 import Header from "./components/Header";
 import { icons } from "./components/data/data";
 
 
-
 const App = () => {
+
+	// Variables / States
 	const [theme, setTheme] = useState("dark");
-	const [itemList, setItemList] = useState([]);
-	const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
-	const newItemIconRef = useRef(null);
-	const newItemInputRef = useRef(null);
-	const [isAddActive, setIsAddActive] = useState(true);
+	const [itemList, setItemList] = useState([]); // The list of tasks
+	const [isAddMenuOpen, setIsAddMenuOpen] = useState(false); // true: the add menu is open / false: the add menu is closed
+	// const newItemIconRef = useRef(null);
+	// const newItemInputRef = useRef(null);
+	const [newItemInputRef, setNewItemInputRef] = useState(null);
+	const [newItemIconRef, setNewItemIconRef] = useState(icons[0].icon);
+	const [isAddActive, setIsAddActive] = useState(true); // true: less than 24 items, user is allowed to add more / false: 24 items already added
 
 
+	// Functions
+	const saveInLocalStorage = (key, value) => {
+		localStorage.setItem(key, JSON.stringify(value));
+	}
+
+	const loadFromLocalStorage = (key) => {
+		return JSON.parse(localStorage.getItem(key));
+	}
 
 	const handleSwitchTheme = () => {
 		if (theme === "dark") {
 			setTheme("light");
-			localStorage.setItem("theme", "light");
+			saveInLocalStorage("theme", "light");
 		}
 		else {
 			setTheme("dark");
-			localStorage.setItem("theme", "dark");
+			saveInLocalStorage("theme", "dark");
 		}
 	}
 
@@ -34,7 +45,7 @@ const App = () => {
 		}
 
 		if (localStorage.getItem("itemList")) {
-			const storedItems = JSON.parse(localStorage.getItem("itemList") || []);
+			const storedItems = loadFromLocalStorage("itemList") || [];
 			setItemList(storedItems);
 
 			handleIsActive(storedItems);
@@ -42,42 +53,43 @@ const App = () => {
 	}
 
 	const addNewItem = () => {
-		const copyItemlist = [...itemList];
+		const copyItemList = [...itemList];
 
-		if (copyItemlist.length === 23) {
+		if (copyItemList.length === 23) {
 			setIsAddActive(false);
 		}
 
 		setIsAddMenuOpen(false);
 
-		copyItemlist.push({
-			title: newItemInputRef.current.value,
-			icon: newItemIconRef.current.value,
-			time: null,
-			date: null,
+		copyItemList.push({
+			title: newItemInputRef,
+			icon: newItemIconRef,
+			time: null, // will be added later
+			date: null, // will be added later
 			isDone: false,
 		});
 
-		setItemList(copyItemlist);
-		localStorage.setItem("itemList", JSON.stringify(copyItemlist));
-
+		setItemList(copyItemList);
+		saveInLocalStorage("itemList", copyItemList);
+		setNewItemIconRef(icons[0].icon); // Resetting the Icon selection to the first option after adding the new task (aka closing the menu)
 	};
 
 	const closeAddNewMenu = () => {
 		if (isAddMenuOpen) {
 			setIsAddMenuOpen(false);
+			setNewItemIconRef(icons[0].icon);  // Resetting the Icon selection to the first option after closing the add new menu
 		}
 	}
 
 	const deleteItem = (id) => {
-		const copyItemlist = [...itemList];
+		const copyItemList = [...itemList];
 
-		copyItemlist.splice(id, 1);
+		copyItemList.splice(id, 1);
 
-		setItemList(copyItemlist);
-		localStorage.setItem("itemList", JSON.stringify(copyItemlist));
+		setItemList(copyItemList);
+		saveInLocalStorage("itemList", copyItemList);
 
-		if (copyItemlist.length < 24) {
+		if (copyItemList.length < 24) {
 			setIsAddActive(true);
 		}
 	}
@@ -92,38 +104,34 @@ const App = () => {
 				setIsAddActive(false);
 			}
 		}
-		else {
-			setIsAddActive(true);
-		}
 	}
 
 	const handleDeleteAll = () => {
 		setItemList([]);
-		localStorage.setItem("itemList", JSON.stringify([]));
+		saveInLocalStorage("itemList", []);
 	}
-
 
 	const generateBackgroundColor = (itemId) => {
 		if (itemList.length > 0) {
 			const colorHue = Math.floor((360 / itemList.length)) * (itemId + 1);
 
-			if (theme === "dark") {
+			if (theme === "dark") { // Color for the items (dark mode)
 				const color = `hsl(${colorHue} 70% 66%)`;
 				return color;
 			}
-			else {
+			else { // Theme for the items (light mode)
 				const color = `hsl(${colorHue} 70% 75%)`;
 			return color;
 			}
 		}
 	}
+ 
+	const handleClick = (id) => { // click: finishing the task
+		const copyItemList = [...itemList];
 
-	const handleClick = (id) => {
-		const copyItemlist = [...itemList];
-
-		copyItemlist[id].isDone = !copyItemlist[id].isDone;
-		setItemList(copyItemlist);
-		localStorage.setItem("itemList", JSON.stringify(copyItemlist));
+		copyItemList[id].isDone = !copyItemList[id].isDone;
+		setItemList(copyItemList);
+		saveInLocalStorage("itemList", copyItemList);
 	}
 
 
@@ -138,7 +146,7 @@ const App = () => {
 				className={`flex flex-col justify-start items-center h-full min-lg:h-screen transition-all ${theme === "dark" ? "bg-slate-900" : "bg-orange-50"}`}
 				onClick={closeAddNewMenu}
 			>
-				<Header onSwtichThemeClick={handleSwitchTheme}/>
+				<Header onSwitchThemeClick={handleSwitchTheme}/>
 				<div className="flex flex-row max-lg:flex-col-reverse max-lg:justify-end justify-center items-center w-full h-full">
 					<div className="h-full max-lg:w-full w-[60%] flex justify-center items-start">
 						<div className={`min-h-[85%] max-lg:h-full ${itemList.length > 12 ? "flex flex-col justify-start items-center gap-3 w-[80%] min-lg:grid min-lg:grid-cols-2 min-lg:grid-rows-12 min-lg:grid-flow-col" : "flex flex-col justify-start items-center gap-3 w-[70%] max-lg:min-w-[360px]"}`}>
@@ -182,17 +190,24 @@ const App = () => {
 						<div className="flex justify-center items-center gap-2 w-[70%]">
 							<input
 								className={`border-[1px] font-mono rounded-xl w-[90%] h-9 p-1 outline-none text-center ${theme === "dark" ? "border-orange-200 text-orange-100 active:border-orange-400 focus:border-orange-400" : "border-rose-600 text-rose-600 active:border-rose-400 focus:border-rose-400"}`}
-								ref={newItemInputRef}
+								onChange={(e) => setNewItemInputRef(e.target.value)}
 							/>
 								<select
 									name="new-item-icon"
 									className="border-[1px] border-rose-600 rounded-md outline-none h-9 cursor-pointer appearance-none bg-rose-400 px-2"
-									ref={newItemIconRef}
+									onChange={(e) => setNewItemIconRef(e.target.value)}
 								>
 									{
 										icons.map((icon) => {
 											return (
-												<option className="text-center" value={icon.label}>{icon.icon}</option>
+												<option
+													key={icon.icon}
+													className="text-center"
+													value={icon.label}
+													
+												>
+													{icon.icon}
+												</option>
 											)
 										})
 									}
